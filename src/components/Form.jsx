@@ -1,8 +1,41 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
+import Error from "./Error";
+function Form({ pacientes, setPacientes }) {
+  const [nombreMascota, setNombreMascota] = useState("");
+  const [nombreDueño, setNombreDueño] = useState("");
+  const [email, setEmail] = useState("");
+  const [fechaAlta, setFechaAlta] = useState("");
+  const [sintomas, setSintomas] = useState("");
 
-function Form() {
+  const [error, setError] = useState(false);
+
+  const handleSumbit = (e) => {
+    e.preventDefault();
+
+    if ([nombreMascota, nombreDueño, email, fechaAlta, sintomas].includes("")) {
+      setError(true);
+      return;
+    }
+    setError(false);
+
+    const pacientesObject = {
+      nombreMascota,
+      nombreDueño,
+      email,
+      fechaAlta,
+      sintomas,
+    };
+    setPacientes([...pacientes, pacientesObject]);
+
+    setNombreMascota("");
+    setNombreDueño("");
+    setEmail("");
+    setFechaAlta("");
+    setSintomas("");
+  };
+
   return (
-    <div className="mt-5 md:w-1/2 lg:w-2/5">
+    <div className="mt-5 md:w-1/2 lg:w-2/5 mx-5">
       <h2 className="font-black text-3xl text-center">Seguimiento Paciente</h2>
       <p className="text-xl mt-2 text-center mb-2">
         Añade pacientes y
@@ -12,7 +45,11 @@ function Form() {
         </span>
       </p>
 
-      <form className="bg-white shadow-md rounded-lg py-10 px-5">
+      <form
+        onSubmit={handleSumbit}
+        className="bg-white shadow-md rounded-lg py-10 px-5"
+      >
+        {error && <Error mensaje="Todos los campos son obligatorios" />}
         <div className="mb-5">
           <label
             htmlFor="name"
@@ -25,9 +62,10 @@ function Form() {
             type="text"
             placeholder="Nombre"
             className="focus:outline-none border-2 p-2 w-full mt-2 placeholder-gray-400 rounded-md"
+            value={nombreMascota}
+            onChange={(e) => setNombreMascota(e.target.value)}
           />
         </div>
-
         <div className="mb-5">
           <label
             htmlFor="name-dueno"
@@ -40,6 +78,8 @@ function Form() {
             type="text"
             placeholder="Nombre"
             className="focus:outline-none border-2 p-2 w-full mt-2 placeholder-gray-400 rounded-md"
+            value={nombreDueño}
+            onChange={(e) => setNombreDueño(e.target.value)}
           />
         </div>
         <div className="mb-5">
@@ -54,6 +94,8 @@ function Form() {
             type="email"
             placeholder="ejemplo@ejemplo.com"
             className="focus:outline-none border-2 p-2 w-full mt-2 placeholder-gray-400 rounded-md"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="mb-5">
@@ -67,9 +109,10 @@ function Form() {
             id="alta"
             type="date"
             className="focus:outline-none border-2 p-2 w-full mt-2 placeholder-gray-400 rounded-md"
+            value={fechaAlta}
+            onChange={(e) => setFechaAlta(e.target.value)}
           />
         </div>
-
         <div className="mb-5">
           <label
             htmlFor="sintomas"
@@ -77,13 +120,19 @@ function Form() {
           >
             Síntomas
           </label>
-          <textarea id="sintomas" className="focus:outline-none border-2 rounded-md block text-gray-700 w-full"></textarea>
+          <textarea
+            id="sintomas"
+            className="focus:outline-none border-2 rounded-md block text-gray-700 w-full"
+            placeholder="Describe sus síntomas"
+            value={sintomas}
+            onChange={(e) => setSintomas(e.target.value)}
+          ></textarea>
         </div>
-
-        <input type="submit"
-        className=" bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 hover:cursor-pointer transition-all"
-        value={"Agregar paciente"}/>
-        
+        <input
+          type="submit"
+          className=" bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 hover:cursor-pointer transition-all"
+          value={"Agregar paciente"}
+        />
       </form>
     </div>
   );

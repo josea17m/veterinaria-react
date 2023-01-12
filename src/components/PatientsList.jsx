@@ -10,7 +10,7 @@ function PatientsList() {
           {" "}pacientes y citas
         </span>
       </p>
-      <div className="md:h-screen overflow-y-scroll">
+      <div className="md:h-screen overflow-y-scroll ">
       <Patient />
       <Patient />
       <Patient />
